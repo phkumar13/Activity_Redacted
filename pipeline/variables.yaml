@@ -1,0 +1,76 @@
+variables:
+  build.name: activity-ms
+  deploy.lab: test
+  build.env: dev
+  build.vs: test #mgmt
+  build.lab: mtgssre #ap
+  build.agent: private
+  build.type: buildah
+  deploy.vs: test
+  
+  # Path for the deploymeny files to be picked up from
+  deployfilespath: pipeline
+  push.branches: master,main,dev,uat
+
+  push.type: skopeo # Push with skopeo/docker
+
+  build.dockerfile: "Dockerfile"
+  build.stubdockerfile: "tests/wiremock/Dockerfile"
+  
+  npm-package.publish: false
+
+  # Sonar Scan
+  sonar.configmode: file
+  sonar.configfile: '$(System.DefaultWorkingDirectory)/sonar-project.properties'
+
+  common.agent-pool-vm-image: ubuntu-22.04
+  sonar.run: true
+  aqua.run: true
+  nexusiq.run: true
+  pact.run: false
+
+  test.hostport: 8085
+  test.targetport: 8085
+  test.stubhostport: 3000
+  test.stubtargetport: 3000  
+
+  test.startparams: --env-file .env
+
+  includeci: yes
+  helmfile: pipeline/helmfile.yaml
+  values: pipeline/values.yaml
+
+  dockertest.filepath: pipeline/executetest.sh
+  dockertest.workingDirectory: "$(System.DefaultWorkingDirectory)/pipeline"
+
+  # ---- Dynatrace ----
+  lab.dynatrace.fullstack.enabled: true
+
+  # unit.test.coverage.file.path: "$(System.DefaultWorkingDirectory)/coverage/clover.xml"
+  unit.test.result.publishreport: true
+  unit.test.coverage.publishreport : true
+  unit.test.result.file.format: 'JUnit' # default unit test report format 
+  unit.test.result.file.name: junit.xml # Unit Test report file name
+  unit.test.coverage.command: 'yarn build:coverage'
+  unit.test.coverage.file.path: "$(System.DefaultWorkingDirectory)/coverage/lcov.info"
+  unit.test.coverage.source.path: "$(System.DefaultWorkingDirectory)/src"
+  unit.test.coverage.report.path: "$(System.DefaultWorkingDirectory)/coverage" 
+
+  # Performance test runs
+  #performance.test.run: true 
+  #performance.test.testreport.publish: true
+  #performance.test.run.command.ad:  $@ -Dlog_level.jmeter=DEBUG -Jenv=appdev -n -t test-automation/api/performance-tests/Activity_APIs.jmx -l test-automation/api/performance-tests/perf.jtl -j test-automation/api/performance-tests/jmeter.log -e -o report -JBASE_URL=127.0.0.1 -JPORT=4000
+  #performance.test.image: jmeter:5.5
+
+  functional.test.run: true
+  functional.test.image: node:18.14.2-buster-slim
+  functional.test.isnodejs: true
+  functional.test.threshold: 100
+  functional.test.dependencies.install.command: sh -c "yarn install" 
+  #functional.test.run.command.dev:  sh -c "yarn test:api:dev" || echo " API test done"
+  functional.test.run.command.uat: sh -c "yarn test:api:uat"  || echo " API test done"
+  functional.test.report.path: "$(System.DefaultWorkingDirectory)/test-automation/api/functional-tests/reports/"
+  functest.port: 8085
+
+  deploy.int.clusters: '1,2'   # This steps do cluster deployment as of now its do on AKS2
+  

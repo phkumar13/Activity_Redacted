@@ -1,0 +1,39 @@
+genericDeploymentChartVersion: ££genericDeploymentChartVersion££
+ingressChartVersion: ££ingressChartVersion££
+egressChartVersion: ££egressChartVersion££
+gatewayChartVersion: ££gatewayChartVersion££
+appimage: ££appimage££
+appport: ££appport££
+apptag: ££apptag££
+stubimage: ££stubimage££
+stubport: ££stubport££
+stubtag: ££stubtag££
+chartacr: ££chartacr££
+ingressDnsHost: ££ingressDnsHost££
+applicationId: ££applicationId££
+ingressSubPath: ££ingressSubPath££ # Path based routing to direct to a different app version
+gatewayChartVersion: ££gatewayChartVersion££
+env_configs:
+# Application environment specific configurations
+  apiVersion: ££apiVersion££
+  domusCookieUrl: ££domusCookieUrl££
+  dbPort: ££dbPort££
+  dbHost: ££dbHost££
+  dbName: ££dbName££
+  dbUserName: ££dbUserName££
+  dbPwd: ££dbPwd££
+egress:
+# Istio Egress End Point
+  db_url: ££db_url££
+  db_port: ££db_port££
+ # cookie_url: ££cookie_url££
+  #cookie_port: ££cookie_port££
+    # Istio Egress core config
+  istioegressRetriesAttempts: ££istioegressRetriesAttempts££
+  istioegressRetriesperTryTimeout: ££istioegressRetriesperTryTimeout££
+  istioegressRetriesretryOn: ££istioegressRetriesretryOn££
+
+# Backend URLs
+backends:
+  backend_url: ££backend_url££
+  cookie_url: http://££cookie_url££

@@ -1,0 +1,8 @@
+parameters:
+ - name: cmds
+   type: object
+   default: []
+
+steps:
+- ${{ each params in parameters.cmds }}:
+  - script: echo "${{ params }} - $(${{ params }})"

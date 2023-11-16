@@ -1,0 +1,98 @@
+{
+  "clusters": [
+    {
+      "template": "values-ad.yaml",
+      "values": {
+        "description": "test lab - aks ad cluster",
+        "env": "dev",
+        "replace": {
+          "applicationId": "AL20244",
+          "genericDeploymentChartVersion": "2.0.12",
+          "ingressChartVersion": "1.3.0",
+          "egressChartVersion": "1.0.11",
+          "gatewayChartVersion": "1.0.1",
+          "ingressDnsHost": "test.lab.aks1",
+          "remoteUrl": "https://example.org",
+          "appimage": "activity-ms",
+          "appport": "8085",
+          "apiVersion": "1",
+          "domusCookieUrl": "http://activity-ms-stub/validate/",
+          "dbPort": "1433",
+          "dbHost": "test-lab-sqldb.database.windows.net",
+          "dbName": "activity",
+          "dbUserName": "activityadmin",
+          "dbPwd": "sql-database-admin-password",
+          "apptag": "latest",
+          "stubimage": "activity-ms-stub",
+          "stubport": "3000",
+          "stubtag": "latest",
+          "chartacr": "admgmtacr",
+          "releases": [
+			"activity-ms", 
+			"activity-ms-stub"
+		  ]
+        }
+      }
+    },
+    {
+      "template": "values-uat-01.yaml",
+      "values": {
+        "description": "test lab - aks uat cluster",
+        "env": "uat",
+        "replace": {
+          "genericDeploymentChartVersion": "2.0.12",
+          "ingressChartVersion": "1.3.0",
+          "egressChartVersion": "1.0.11",
+          "gatewayChartVersion": "1.0.1",
+          "remoteUrl": "https://example.org",
+          "appimage": "activity-ms",
+          "appport": "8085",
+          "apiVersion": "1",
+          "cookieValidatorUrl": "http://testuat-auth-app.mvs-testuat-auth-develop.svc.cluster.local/api/v1/validate",
+          "dbPort": "1433",
+          "dbHost": "testuat-lab-sqldb.database.windows.net",
+          "dbName": "activity",
+          "dbUserName": "activityadmin",
+          "dbPwd": "sql-database-admin-password",
+          "chartacr": "admgmtacr",
+          "ingressDnsHost": "testuat.lab.aks1",
+          "ingressSubPath": "/develop",
+          "releases": [
+			"activity-ms", 
+			"activity-ms-ingress"
+		  ]
+        }
+      }
+    },
+        {
+      "template": "values-main-02.yaml",
+      "values": {
+        "description": "test - aks main cluster",
+        "env": "main",
+        "replace": {
+          "genericDeploymentChartVersion": "2.0.12",
+          "ingressChartVersion": "1.3.0",
+          "egressChartVersion": "1.0.11",
+          "gatewayChartVersion": "1.0.1",
+          "remoteUrl": "https://example.org",
+          "appimage": "activity-ms",
+          "appport": "8085",
+          "apiVersion": "1",
+          "cookieValidatorUrl": "http://testmain-auth-app.testmain-auth-develop.svc.cluster.local/api/v1/validate",
+          "dbPort": "1433",
+          "dbHost": "testmain-lab-sqldb.database.windows.net",
+          "dbName": "activity",
+          "dbUserName": "activityadmin",
+          "dbPwd": "sql-database-admin-password",
+          "chartacr": "admgmtacr",
+          "ingressDnsHost": "testmain.onbrdng.lab.aks2",
+          "ingressSubPath": "/develop",
+          "releases": [
+			"activity-ms", 
+			"activity-ms-ingress"
+		  ]
+        }
+      }
+    }
+  ]
+}

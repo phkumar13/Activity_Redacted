@@ -1,0 +1,16 @@
+parameters:
+  - name: DIRECTORY
+    type: string
+    default: "."
+
+variables:
+  - name: dev
+    value: "main,feature,feat"
+  - name: int
+    value: "develop,pr"
+  - name: preprod
+    value: "release"
+  - name: prod
+    value: "master"
+  - name: dyn
+    value: "$(Build.SourceBranchName)"

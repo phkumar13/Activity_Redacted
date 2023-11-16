@@ -1,0 +1,459 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Swagger Prospect Activity Micro Service - OpenAPI 3.0",
+    "description": "This is Prospect Activity Micro Service Node Server based on the OpenAPI 3.0 specification.  You can find out more about\nSwagger at [https://swagger.io](https://swagger.io). In the third iteration of the prospect managment micro service, we've switched to the design first approach!\nYou can now help us improve the API whether it's by making changes to the definition itself or to the code.\nThat way, with time, we can improve the API in general, and expose some of the new features in OAS3.",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.11"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "https://prospect.swagger.io/api/v3"
+    }
+  ],
+  "paths": {
+    "/dataapi/activity/V1/{prospectId}/{activity}": {
+      "get": {
+        "tags": ["Find Activity Information"],
+        "summary": "Fetch latest activity details for given Prospect and Activity",
+        "description": "Find Activity by prospect id and activity",
+        "operationId": "getActivity",
+        "parameters": [
+          {
+            "name": "x-authorization-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "dummyValue"
+            },
+            "description": "Unique Request Id"
+          },
+          {
+            "name": "x-correlation-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "dummyValue"
+            },
+            "description": "Unique Correlation Id"
+          },
+          {
+            "name": "x-session-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "dummyValue"
+            },
+            "description": "Unique Session Id"
+          },
+          {
+            "name": "prospectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "Prospect Id."
+          },
+          {
+            "name": "activity",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minimum": 1
+            },
+            "description": "activity."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Activity not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataapi/activity/V1/{prospectId}": {
+      "get": {
+        "tags": ["Find All Activities of Prospect"],
+        "summary": "Fetches all latest activity details for given Prospect",
+        "description": "Find all Activities for given prospect Id",
+        "operationId": "getActivities",
+        "parameters": [
+          {
+            "name": "x-authorization-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "dummyValue"
+            },
+            "description": "Unique Request Id"
+          },
+          {
+            "name": "x-correlation-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "dummyValue"
+            },
+            "description": "Unique Correlation Id"
+          },
+          {
+            "name": "x-session-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "dummyValue"
+            },
+            "description": "Unique Session Id"
+          },
+          {
+            "name": "prospectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "Prospect Id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivitiesResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivitiesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Activity not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/activity/v1/{prospectId}": {
+      "post": {
+        "tags": ["Create Activity Information Record"],
+        "summary": "Create Activity Information Record with new activity id",
+        "description": "Create Activity Information Record with new activity id",
+        "parameters": [
+          {
+            "name": "x-authorization-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "dummyValue"
+            },
+            "description": "Unique Request Id"
+          },
+          {
+            "name": "x-correlation-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "dummyValue"
+            },
+            "description": "Unique Correlation Id"
+          },
+          {
+            "name": "x-session-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "dummyValue"
+            },
+            "description": "Unique Session Id"
+          },
+          {
+            "name": "prospectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "Prospect Id."
+          }
+        ],
+        "requestBody": {
+          "description": "Create a new Activity Record in the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateActivitySchema"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateActivitySchema"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateActivitySchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully Created Activity Record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateActivityResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateActivityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Prospect doesn't exist/invalid usertype"
+          },
+          "404": {
+            "description": "Validation exception / Invalid prospectid"
+          }
+        }
+      }
+    },
+    "/api/v1/activity/v1/seccert/{prospectId}": {
+      "post": {
+        "tags": ["Create Seccert Activity Information Record"],
+        "summary": "Create Seccert Activity Information Record with new activity id",
+        "description": "Create Seccert Activity Information Record with new activity id",
+        "parameters": [
+          {
+            "name": "x-correlation-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "dummyValue"
+            },
+            "description": "Unique Correlation Id"
+          },
+          {
+            "name": "prospectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "Prospect Id."
+          }
+        ],
+        "requestBody": {
+          "description": "Create a new Activity Record in the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateActivitySchema"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateActivitySchema"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateActivitySchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully Created Activity Record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateActivityResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateActivityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Prospect doesn't exist/invalid usertype"
+          },
+          "404": {
+            "description": "Validation exception / Invalid prospectid"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateActivitySchema": {
+        "type": "object",
+        "properties": {
+          "activity": {
+            "type": "string",
+            "example": "Intent"
+          },
+          "status": {
+            "type": "string",
+            "example": "Completed"
+          },
+          "activityDate": {
+            "type": "string",
+            "example": "2021-12-07T15:45:35.023Z"
+          }
+        },
+        "xml": {
+          "name": "CreateActivitySchema"
+        }
+      },
+      "CreateActivityResponse": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "Successfully Created Activity Record"
+          }
+        }
+      },
+      "ActivityResponse": {
+        "type": "object",
+        "properties": {
+          "activity": {
+            "type": "string",
+            "description": "Activity details",
+            "example": "Intent"
+          },
+          "status": {
+            "type": "string",
+            "description": "Value of activity status",
+            "example": "Complete"
+          },
+          "activityDate": {
+            "type": "string",
+            "description": "Activity Date and time",
+            "example": "21/01/2023"
+          }
+        }
+      },
+      "ActivitiesResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ActivityResponse"
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorMessage"
+          }
+        }
+      },
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

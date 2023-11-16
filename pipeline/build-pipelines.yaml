@@ -1,0 +1,41 @@
+name: activity-ms
+trigger:
+  branches:
+    include:
+      - main
+      - uat
+      - dev
+
+resources:
+  repositories:
+    - repository: azure-libraries
+      type: git
+      name: azure-devops-libraries
+      ref: refs/tags/V11.0.0
+    - repository: libraries
+      type: git
+      name: CloudFirst/azure-devops-libraries
+      ref: refs/heads/master
+    - repository: common
+      type: git
+      name: CloudFirst/cne-common-config
+      ref: refs/heads/master
+    - repository: environments
+      type: git
+      name: CloudFirst/cne-environments-config
+      ref: refs/heads/master
+    - repository: featureflag
+      type: git
+      name: azure-cne-config
+      ref: refs/heads/main
+
+variables:
+    - template: shared/build/image/v1/config.yaml@libraries
+    - template: config.yaml@azure-libraries
+    - template: variables.yaml
+    - template: pipelinevars.yaml@azure-libraries
+
+stages:
+  - template: pipelines/build-apps/build-pipeline.yaml@azure-libraries
+    parameters:
+      vars: ${{ variables }}

@@ -1,0 +1,125 @@
+releases:
+  - name: activity-ms-app
+    namespace: {{ .Values.namespace }}
+    chart: generic-deployment
+    labels:
+      app: activity-ms
+    version: {{ .Values.genericDeploymentChartVersion }}
+    values:
+      - global:
+          disableNamespaceLabelling: true
+          secrets:
+            - name: {{ .Values.env_configs.dbPwd }}
+          image:
+            name: {{ .Values.appimage }}
+            tag: {{ .Values.apptag }}
+          imagePullPolicy: Always
+          replicas: 1
+          port: {{ .Values.appport }}
+          hpa:
+            enabled: true
+            minReplicas: 1
+            maxReplicas: 2
+          livenessProbe:
+            path: /live
+            port: {{ .Values.appport }}
+          readinessProbe:
+            path: /ready
+            port: {{ .Values.appport }}
+          applicationId: AL20244 
+          environment:
+            - name: SECURE_PORT
+              value: {{ .Values.appport }}
+            - name: APP_PORT
+              value: {{ .Values.appport }} 
+            - name: API_VERSION     
+              value: {{ .Values.env_configs.apiVersion }}   
+            - name: COOKIE_URL     
+              value: {{ .Values.env_configs.cookieValidatorUrl }}  
+            - name: DB_PORT     
+              value: {{ .Values.env_configs.dbPort }}  
+            - name: DB_HOST     
+              value: {{ .Values.env_configs.dbHost }}  
+            - name: DB_NAME     
+              value: {{ .Values.env_configs.dbName }}  
+            - name: DB_USERNAME     
+              value: {{ .Values.env_configs.dbUserName }} 
+            - name: DB_PASSWORD     
+              value: '/mnt/secrets/sql-database-admin-password'       
+
+  - name: activity-ms-stub
+    namespace: {{ .Values.namespace }}
+    chart: generic-deployment
+    labels:
+      app: activity-ms-stub
+    version: {{ .Values.genericDeploymentChartVersion }}
+    values:
+      - global:
+          disableNamespaceLabelling: true
+          image:
+            name: {{ .Values.stubimage }}
+            tag: {{ .Values.stubtag }}
+          imagePullPolicy: Always
+          replicas: 1
+          port: {{ .Values.stubport }}
+          hpa:
+            enabled: true
+            minReplicas: 1
+            maxReplicas: 2 
+          livenessProbe:
+            enabled: false
+            path: /live
+            port: {{ .Values.appport }}
+          readinessProbe:
+            enabled: false
+            path: /ready
+            port: {{ .Values.appport }}
+          applicationId: AL20244  
+
+  - name: activity-ms-ingress
+    namespace: {{ .Values.namespace }}
+    chart: ingress
+    labels:
+      app: activity-ms-ingress
+    version: {{ .Values.ingressChartVersion }}
+    values:
+      - gateway:
+          common: true
+          namespace: activity-ms-gateway
+      - dns:
+          host: {{ .Values.ingressDnsHost }}
+      - ingresses:
+          https:
+            - name: activity-ms.uks1
+              releases:
+                - name: activity-ms-app
+                  uris:               
+                    - prefix: /dataapi/activity{{ if hasKey .Values "ingressSubPath" }}{{ .Values.ingressSubPath }}{{ end }}/
+                    - prefix: /dataapi/activity{{ if hasKey .Values "ingressSubPath" }}{{ .Values.ingressSubPath }}{{ end }}
+                    - prefix: /dataapi/activity/
+                    - prefix: / # probe is on / from appgw
+                  rewrite: /dataapi/activity/
+            - name: activity-ms.uks2
+              releases:
+                - name: activity-ms-app
+                  uris:
+                    - prefix: /dataapi/activity{{ if hasKey .Values "ingressSubPath" }}{{ .Values.ingressSubPath }}{{ end }}/
+                    - prefix: /dataapi/activity{{ if hasKey .Values "ingressSubPath" }}{{ .Values.ingressSubPath }}{{ end }}
+                    - prefix: /dataapi/activity/
+                    - prefix: / # probe is on / from appgw
+                  rewrite: /dataapi/activity/
+  - name: activity-ms-gateway
+    namespace: {{ .Values.namespace }}
+    chart: ingress-gateway
+    labels:
+      app: activity-ms-gateway
+    version: {{ .Values.gatewayChartVersion }}
+    values:
+      - dns:
+          host: {{ .Values.ingressDnsHost }}   
+      - gateways:
+            https:
+              - name: activity-ms.uks1
+                # GW-1 same name as vs in Pipeline
+              - name: activity-ms.uks2
+                # GW-2 same name as vs in Pipeline
